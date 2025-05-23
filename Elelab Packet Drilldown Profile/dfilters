@@ -1,0 +1,55 @@
+##########################################################################
+#   Wireshark Profile:  Elelab Packet Drilldown Profile                  #
+#   Author:             elelabdev                                        #
+#   Description:        For every Network Warrior this Wireshark profile #
+#                       aims to help making troubleshooting easier.      #
+#                                                                        #
+#   Github:      https://github.com/elelabdev/wireshark-profile          #
+#                                                                        #
+#   Icon Author: elelab                                                  #
+#                                                                        #
+#   Copyright (C) 2025 elelab                                            #
+#   https://www.elelab.dev                                               #
+#                                                                        #
+#   Licensed under the MIT License. See LICENSE file in the project      #
+#   root for details.                                                    #
+##########################################################################
+"TRUE","Show Any Data in TCP Urgent Field","tcp.urgent_pointer > 0","Urgent pointer non-zero"
+"TRUE","Show TCP port 443 / 4430-4434","tcp.port in {443 4430..4434}","443 & common SSL variants"
+"TRUE","Show TCP SYN with ACK# = 0","tcp.flags.syn==1 && tcp.flags.ack==0 && tcp.ack==0","Opening SYNs only"
+"TRUE","Show TCP SYN-ACK (bitwise)","(tcp.flags & 0x12) == 0x12","SYN+ACK using bitmask"
+"TRUE","Show TCP connection refusal / ACK-scan","tcp.flags.reset==1 && tcp.flags.ack==1 && tcp.seq==1 && tcp.ack==1","RST+ACK right after SYN"
+"TRUE","Show the 3-way handshake packets","tcp.flags.syn==1 || (tcp.seq==1 && tcp.ack==1 && tcp.len==0 && tcp.analysis.initial_rtt)","SYN / SYN-ACK / 1st ACK"
+"TRUE","Show TCP SYN packets (count conns)","tcp.flags.syn==1 && tcp.flags.ack==0","All initial SYNs"
+"TRUE","Show TCP Window = 0","tcp.analysis.zero_window","Receiver advertised zero window"
+"TRUE","Show TCP Window Update","tcp.analysis.window_update","Window reopened"
+"TRUE","Show TCP Window Full","tcp.analysis.window_full","Sender filled receive window"
+"TRUE","Show TCP Resets","tcp.flags.reset==1","All RST packets"
+"TRUE","Show TCP Δ-time > 1 s","frame.time_delta_displayed > 1","Gap between displayed packets >1 s"
+"TRUE","Show TCP Retransmissions / OOO","tcp.analysis.retransmission || tcp.analysis.fast_retransmission || tcp.analysis.spurious_retransmission || tcp.analysis.out_of_order","Any RTX / out-of-order"
+"TRUE","Show TCP SYN or SYN-ACK","tcp.flags.syn==1","All handshake SYNs"
+"TRUE","Show TCP SYN-ACK","tcp.flags.syn==1 && tcp.flags.ack==1","Handshake reply"
+"TRUE","Show TCP SYN (client)","tcp.flags.syn==1 && tcp.flags.ack==0","Handshake opener"
+"TRUE","Show TCP PUSH bit set","tcp.flags.push==1","Segments with PSH"
+"TRUE","Show TCP selected stream","tcp.stream == ${tcp.stream}","Packets of current stream"
+"TRUE","Show TCP Δ-time > 1 s (no SYN/FIN/RST)","frame.time_delta_displayed > 1 && !(tcp.flags.syn||tcp.flags.fin||tcp.flags.reset)","Slow data phase only"
+"TRUE","Show#Bad TCP* only","tcp.analysis.flags && !tcp.analysis.window_update && !(tcp.analysis.keep_alive || tcp.analysis.keep_alive_ack)","Errors excluding keep-alives"
+"TRUE","Show TCP payload containing \"GET\"","tcp contains \"GET\"","Rough HTTP GET hunt"
+"TRUE","Show Slow HTTP transactions","frame.time_delta_displayed > 1 && (http.request.method==\"GET\" || http.response.code==200)",">1 s between displayed HTTP frames"
+"TRUE","Non-HTTP & non-SMTP to/from 10.0.0.1","!(tcp.port==80 || tcp.port==25) && ip.addr==10.0.0.1","Everything but HTTP/SMTP for host"
+"TRUE","No ARP and no DNS","!arp && !(udp.port==53 || tcp.port==53)","Scrub ARP and DNS"
+"TRUE","HTTP","http","All HTTP traffic"
+"TRUE","TCP or UDP port 80","tcp.port==80 || udp.port==80","Classic HTTP port"
+"TRUE","Non-DNS","!(udp.port==53 || tcp.port==53)","Exclude DNS"
+"TRUE","UDP only","udp","Filter to UDP"
+"TRUE","TCP only","tcp","Filter to TCP"
+"TRUE","IPv6 address 2001:db8::1","ipv6.addr==2001:db8::1","Specific IPv6 host"
+"TRUE","IPv6 only","ipv6","All IPv6 traffic"
+"TRUE","IPv4 addr ≠ 10.0.0.1","!(ip.addr==10.0.0.1)","Exclude one host"
+"TRUE","IPv4 addr 10.0.0.1","ip.addr==10.0.0.1","Single host"
+"TRUE","IPv4 only","ip && !ipv6","No IPv6"
+"TRUE","No ARP","!arp","Exclude ARP"
+"TRUE","Packets with comments","frame.comment","Frames annotated in capture"
+"TRUE","Ethernet broadcast","eth.addr==ff:ff:ff:ff:ff:ff","L2 broadcast"
+"TRUE","EtherType 0x0806 (ARP)","eth.type==0x0806","ARP frames"
+"TRUE","Ethernet address 00:08:15:00:08:15","eth.addr==00:08:15:00:08:15","Specific NIC OUI / host"
