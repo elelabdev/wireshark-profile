@@ -1,6 +1,6 @@
 # Change Log
 Please see https://github.com/elelabdev/wireshark-profile/releases for the latest release notes. The notes below have been kept for historical purposes.
-All notable changes to the "net-commander" extension will be documented in this file.
+All notable changes to the "wireshark" profile will be documented in this file.
 
 <br><br>
 
